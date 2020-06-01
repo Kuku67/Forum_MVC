@@ -1,0 +1,178 @@
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    width: 100vw;
+    height: 100vh;
+}
+
+#wrapper {
+    height: 100vh;
+}
+
+main,
+#page,
+#home-jumbotron {
+    height: calc(100% - 63.38px);
+    margin: 0;
+}
+
+.label-date,
+.label-message {
+    text-align: center;
+}
+
+.alert {
+    display: inline-block;
+}
+
+.italic {
+    font-style: italic;
+}
+
+.resolved {
+    background-color: rgba(36, 219, 36, 0.267);
+}
+
+.fas {
+    margin: 0 .5em;
+}
+
+.fa-lock {
+    color: red;
+}
+
+.fa-unlock {
+    color: green;
+}
+
+.fa-cogs {
+    margin-left: 1.5em;
+    font-size: 1.2em;
+}
+
+#main-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid rgb(228, 228, 228);
+}
+
+#secondary-nav,
+#left-nav {
+    display: inherit;
+}
+
+#main-nav a {
+    text-decoration: none;
+    color: #333333;
+    padding: 1.2em 1em;
+}
+
+#security-form {
+    width: 50%;
+}
+
+.administation-bundle {
+    margin: 1em 2em;
+    background-color: rgb(241, 241, 241);
+}
+
+.administation-bundle p {
+    display: flex;
+    margin: 0;
+}
+
+.administation-bundle a,
+.comment-bundle a,
+.submit {
+    text-decoration: none;
+    padding: 1em;
+    margin: 0 0 0 .5em;
+    color: #313131;
+    border: none;
+}
+
+.submit {
+    background-color: rgb(206, 206, 206);
+    padding: .7em .5em;
+    border-radius: 5px;
+    margin: 0;
+}
+
+.comment-bundle a {
+    padding: 0;
+}
+
+#main-nav a:hover,
+.administation-bundle a:hover,
+.submit:hover {
+    background-color: rgba(33, 56, 189, 0.650);
+    color: white;
+    transition: .4s;
+}
+
+#page {
+    height: 100%;
+}
+
+.container-heading .lead {
+    margin-top: 3em;
+    font-weight: 400;
+    color: rgb(33, 56, 189);
+}
+
+.separator {
+    color: initial;
+}
+
+.topic {
+    border-bottom: 1px solid rgb(228, 228, 228);
+}
+
+.topic span {
+    font-weight: 500;
+}
+
+.topic-container {
+    padding: 1em 2em;
+}
+
+.topic-container .row {
+    display: flex;
+    align-items: center;
+    padding: 1em 1.5em;
+}
+
+.topic-container .topic-title {
+    border-bottom: 1px solid rgb(228, 228, 228);
+    padding: 1em 1.5em;
+}
+
+.topic-container .lead {
+    font-size: 1.2em;
+    margin: 0;
+}
+
+.title-separator {
+    margin: 1em auto .6em auto;
+    width: 10%;
+    height: 3px;
+    background-color: rgb(33, 56, 189);
+}
+
+.comment {
+    padding: .8em 1em;
+    background-color: rgba(241, 241, 241, 0.452);
+    margin-bottom: 1em;
+}
+
+.comment-heading p {
+    margin: 0;
+}
+
+.forgive {
+    margin-right: .5em;
+}

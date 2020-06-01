@@ -1,0 +1,5 @@
+RewriteEngine On
+# RewriteBase /blogmvc/
+RewriteRule ^([a-z]+)/([a-z]+)$ index.php?ctrl=$1&method=$2 [QSA]
+RewriteRule ^([a-z]+)/([a-z]+)/([0-9]+)$ index.php?ctrl=$1&method=$2&id=$3
+RewriteRule ^([a-z]+)/([a-z]+)/([0-9]+)/([0-9]+)$ index.php?ctrl=$1&method=$2&id=$3&target=$4
