@@ -111,17 +111,16 @@ class TopicController {
     public function lock() {
         // Si un param ID est présent
         if(isset($_GET['id'])) {
-            // Choix du manager
             $id = $_GET['id'];
+            // Choix du manager
             $model = new TopicManager();
             // Si un topic existe
             if($topic = $model->findOneById($id)) {
                 // Vérification des droits
                 if(Session::getUser()->getId() == $topic->getUser()->getId() || Session::getUser()->getRole() === 'admin') {
                     // Vérouillage du topic
-                    $model->lockTopic($id);
+                    $topic->getVerrouillage() == false ? $model->lockTopic($id, true) : $model->lockTopic($id, false);
                     // Message de confirmation et redirection
-                    Session::setMessage("Le sujet a bien été verrouillé.", "success");
                     Router::redirectTo("topic", "view", $id);
                 } else {
                     Session::setMessage("Vous n'avez pas les droits nécessaires", "danger");
@@ -136,79 +135,20 @@ class TopicController {
         }
     }
 
-    // Déverrouiller un topic
-    public function unlock() {
-        // Si un param ID est présent
-        if(isset($_GET['id'])) {
-            // Choix du manager
-            $id = $_GET['id'];
-            $model = new TopicManager();
-            // Si un topic existe
-            if($topic = $model->findOneById($id)) {
-                // Vérification des droits
-                if(Session::getUser()->getId() == $topic->getUser()->getId() || Session::getUser()->getRole() === 'admin') {
-                    // Dévérouillage du topic
-                    $model->unlockTopic($id);
-                    // Message de confirmation et redirection
-                    Session::setMessage("Le sujet a bien été déverrouillé.", "success");
-                    Router::redirectTo("topic", "view", $id);
-                } else {
-                    Session::setMessage("Vous n'avez pas les droits nécessaires", "danger");
-                    Router::redirectTo("home", "index");
-                }
-            } else {
-                Session::setMessage("Vous ne pouvez pas verrouiller un sujet qui n'existe pas...", "secondary");
-                Router::redirectTo("home", "index");
-            }
-        } else {
-            Router::redirectTo("home", "index");
-        }
-    }
-
-    // Mettre un topic en résolu
+    // Switch entre résolu/non résolu
     public function resolve() {
         // Si un param ID est présent
         if(isset($_GET['id'])) {
-            // Choix du manager
             $id = $_GET['id'];
+            // Choix du manager
             $model = new TopicManager();
             // Si un topic existe
             if($topic = $model->findOneById($id)) {
                 // Vérification des droits
                 if(Session::getUser()->getId() == $topic->getUser()->getId() || Session::getUser()->getRole() === 'admin') {
                     // Passage en statut résolu
-                    $model->resolveTopic($id);
+                    $topic->getResolu() == false ? $model->resolveTopic($id, true) : $model->resolveTopic($id, false);
                     // Message de confirmation et redirection
-                    Session::setMessage("Le statut « résolu » a bien été ajouté.", "success");
-                    Router::redirectTo("topic", "view", $id);
-                } else {
-                    Session::setMessage("Vous n'avez pas les droits nécessaires", "danger");
-                    Router::redirectTo("home", "index");
-                }
-            } else {
-                Session::setMessage("Vous ne pouvez pas agir sur un sujet qui n'existe pas...", "secondary");
-                Router::redirectTo("home", "index");
-            }
-        } else {
-            Router::redirectTo("home", "index");
-        }
-    }
-
-    // Retirer le statut résolu d'un topic
-    public function unresolve() {
-        // Si un param ID est présent
-        if(isset($_GET['id'])) {
-            // Choix du manager
-            $id = $_GET['id'];
-            $model = new TopicManager();
-            // Si un topic existe
-            if($topic = $model->findOneById($id)) {
-                // Vérification des droits
-                if(Session::getUser()->getId() == $topic->getUser()->getId() || Session::getUser()->getRole() === 'admin') {
-                    // Retrait du statut résolu
-                    $model->unresolveTopic($id);
-                    // Message de confirmation et redirection
-                    Session::setMessage("Le statut « résolu » a bien été retiré.", "success");
                     Router::redirectTo("topic", "view", $id);
                 } else {
                     Session::setMessage("Vous n'avez pas les droits nécessaires", "danger");

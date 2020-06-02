@@ -3,12 +3,11 @@
 namespace Controller;
 
 use App\Session;
-use Model\UserManager;
 use Model\TopicManager;
-use Model\MessageManager;
 
 class HomeController {
 
+    // Fonction pour retourner ma Homepage
     public function index() {
 
         $model = new TopicManager();

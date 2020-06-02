@@ -20,6 +20,7 @@
                 <label for="contenu">Contenu</label>
                 <textarea name="contenu" rows="15"><?= $comment->getContenu() ?></textarea>
             </div>
+            <input type="hidden" name="token" value="<?= App\Session::getToken() ?>">
             <a href="/topic/view/<?= $comment->getTopic()->getId() ?>" class="forgive">Annuler</a>
             <button type="submit" name="submit" class="submit bg-success text-white">Enregistrer</button>
         </form>

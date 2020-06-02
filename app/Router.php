@@ -1,9 +1,20 @@
 <?php
 namespace App;
 
+use App\Session;
+
 abstract class Router {
     
-    public static function handleRequest($get){
+    // Fonction de gestion de la requête HTTP
+    public static function handleRequest($get, $post){
+        // Avant toute chose, si j'ai pas de Token CSRF, j'en met un.
+        !Session::getToken() ? Session::setToken() : null;
+        // Si sur le moindre POST, le Token ne correspond pas, on annule.
+        if(!empty($post) && $post['token'] !== Session::getToken()) {
+            Session::setToken();
+            self::redirectTo("home", "index");
+        }
+
         // Controller et Method par défaut
         $ctrlname = "Controller\HomeController";
         $method = "index";
@@ -26,11 +37,12 @@ abstract class Router {
     public static function redirectTo($ctrl = null, $method = null, $id = null){
         // Si CTRL est autre chose que home, on construit l'url en fonction des param
         if($ctrl != "home") {
+            $url = "";
             $url.= $ctrl ? "/".$ctrl : "";
             $url.= $method ? "/".$method : "";
             $url.= $id ? "/".$id : "";
         } else $url = "/";
         header("Location: $url");
-        die();   
+        die();
     }
 }

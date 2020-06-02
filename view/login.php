@@ -16,6 +16,11 @@
             <label for="password">Mot de passe</label>
             <input type="password" class="form-control" name="password">
         </div>
+        <div class="form-check">
+            <input type="checkbox" class="form-check-input" name="remember">
+            <label class="form-check-label" for="remember">Check me out</label>
+        </div>
+        <input type="hidden" name="token" value="<?= App\Session::getToken() ?>">
         <button type="submit" class="submit" name="submit">Connexion</button>
     </form>
 </div>

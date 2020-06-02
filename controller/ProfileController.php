@@ -47,4 +47,36 @@ class ProfileController {
             Router::redirectTo("home", "index");
         }
     }
+
+    // Fonction de suppression d'un utilisateur
+    public function delete() {
+        // Si un identifiant est renseigné
+        if(isset($_GET['id'])) {
+
+            $id = $_GET['id'];
+            // J'instancie le Manager dont j'ai besoin
+            $model = new UserManager();
+            // Si l'utilisateur existe
+            if($user = $model->findOneById($id)) {
+                // J'ai besoin de récupérer tous les messages associés à l'utilisateur
+                $messageModel = new MessageManager();
+                $messages = $messageModel->findByUserId($id);
+                // J'ai besoin de récupérer tous les topics associés à l'utilisateur
+                $topicModel = new TopicManager();
+                $topics = $topicModel->findByUserId($id);
+                // Pour chaque message, on leur attribut un nouvel auteur fantôme
+                foreach($messages as $message) {
+                    $messageModel->nullifyMessage($message->getId());
+                }
+                // Pour chaque topic, on leur attribut un nouvel auteur fantôme
+                foreach($topics as $topic) {
+                    $topicModel->nullifyTopic($topic->getId());
+                }
+                // Ensuite je supprime l'utilisateur
+                $model->deleteUser($user->getId());
+                // Et enfin je le redirige
+                Router::redirectTo("security", "logout");
+            }
+        }
+    }
 }

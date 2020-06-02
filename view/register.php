@@ -24,6 +24,7 @@
             <label for="password2">Confirmez le mot de passe</label>
             <input type="password" class="form-control" name="password2">
         </div>
+        <input type="hidden" name="token" value="<?= App\Session::getToken() ?>">
         <button type="submit" class="submit" name="submit">Inscription</button>
     </form>
 </div>

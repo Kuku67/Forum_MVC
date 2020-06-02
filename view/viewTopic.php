@@ -9,7 +9,7 @@
         <p class="alert alert-<?= $message['type'] ?>"><?= $message['content'] ?></p>
         <?php App\Session::unsetMessage(); ?>
         <?php } else { 
-            if($topic->getVerouillage() == 1): ?>
+            if($topic->getVerrouillage() == true): ?>
         <p class="alert alert-danger">Le sujet est verrouillé.</p>
         <?php endif; } ?>
         <!-- BUNDLE D'ADMIN -->
@@ -17,16 +17,8 @@
         <div class="administation-bundle d-flex justify-content-between align-items-center">
             <i class="fas fa-cogs text-dark"></i>
             <p>
-                <?php if($topic->getVerouillage() == 0): ?>
-                <a href="/topic/lock/<?= $topic->getId() ?>"><i class="fas fa-key"></i>Verrouiller</a>
-                <?php else: ?>
-                <a href="/topic/unlock/<?= $topic->getId() ?>"><i class="fas fa-key"></i>Déverrouiller</a>
-                <?php endif; ?> 
-                <?php if($topic->getResolu() == 0): ?>
-                <a href="/topic/resolve/<?= $topic->getId() ?>"><i class="fas fa-check"></i>Marquer comme résolu</a>
-                <?php else: ?>
-                <a href="/topic/unresolve/<?= $topic->getId() ?>"><i class="fas fa-check"></i>Retirer le statut « résolu »</a>
-                <?php endif; ?>
+                <a href="/topic/lock/<?= $topic->getId() ?>"><i class="fas fa-key"></i><?= $topic->getVerrouillage() == false ? 'Verrouiller le sujet' : 'Déverrouiller le sujet' ?></a>
+                <a href="/topic/resolve/<?= $topic->getId() ?>"><i class="fas fa-check"></i><?= $topic->getResolu() == false ? 'Marquer comme résolu' : 'Retirer le statut « résolu »' ?></a>
                 <a href="/topic/edit/<?= $topic->getId() ?>"><i class="fas fa-pencil-ruler"></i>Éditer</a>
                 <a href="/topic/delete/<?= $topic->getId() ?>"><i class="fas fa-ban"></i>Supprimer</a>
             </p>
@@ -56,7 +48,7 @@
         </div>
         <?php endforeach; ?>
             <!-- LE FORMULAIRE D'ENVOI DE MESSAGE -->
-        <?php if($topic->getVerouillage() == 0): ?>
+        <?php if($topic->getVerrouillage() == false): ?>
         <div class="container">
             <h3 class="text-dark display-5">Laisser un message</h3>
             <hr class="my-4">
@@ -65,6 +57,7 @@
                     <label for="contenu" class="text-white lead">Message</label>
                     <textarea name="contenu" class="form-control" rows="15"></textarea>
                 </div>
+                <input type="hidden" name="token" value="<?= App\Session::getToken() ?>">
                 <button type="submit" name="submit" class="submit">Déposer le message</button>
             </form>
         </div>

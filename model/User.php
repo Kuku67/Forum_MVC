@@ -10,6 +10,7 @@ class User extends AbstractEntity {
     private $password;
     private $inscription;
     private $role;
+    private $secret;
 
     public function __construct($data){
         parent::hydrate($data, $this);
@@ -117,5 +118,25 @@ class User extends AbstractEntity {
             $this->role = $role;
 
             return $this;
+    }
+
+    /**
+     * Get the value of secret
+     */ 
+    public function getSecret()
+    {
+        return $this->secret;
+    }
+
+    /**
+     * Set the value of secret
+     *
+     * @return  self
+     */ 
+    public function setSecret($secret)
+    {
+        $this->secret = $secret;
+
+        return $this;
     }
 }

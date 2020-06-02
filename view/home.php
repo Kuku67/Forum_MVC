@@ -47,13 +47,13 @@
           </div>
       </div>
       <?php foreach($topics as $topic): ?>
-      <div class="row topic <?= $topic->getResolu() == 1 ? "resolved" : null ?>">
+      <div class="row topic <?= $topic->getResolu() == true ? "resolved" : null ?>">
           <div class="col-lg-8">
               <p class="lead">
-                <?php if($topic->getVerouillage() == 1): ?>
+                <?php if($topic->getVerrouillage() == true): ?>
                 <span class="text-danger">[CLOSED] </span>
                 <?php endif; ?>
-                <?php if($topic->getResolu() == 1): ?>
+                <?php if($topic->getResolu() == true): ?>
                 <span class="text-success">[RESOLVED] </span>
                 <?php endif; ?>
                 <a href="/topic/view/<?= $topic->getId() ?>">

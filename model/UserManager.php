@@ -11,6 +11,7 @@ class UserManager extends AbstractManager {
         self::connect(self::$classname);
     }
 
+    // Trouver un utilisateur en fonction de son mail ou pseudo
     public function findUser($login){
         
         $sql = "SELECT * FROM utilisateur WHERE mail = :login OR pseudo = :login ";
@@ -21,6 +22,7 @@ class UserManager extends AbstractManager {
         );
     }
 
+    // Trouver un utilisateur en fonction de ton ID
     public function findOneById($id){
         
         $sql = "SELECT * FROM utilisateur WHERE id = :id";
@@ -31,6 +33,7 @@ class UserManager extends AbstractManager {
         );
     }
 
+    // Ajouter un utilisateur (inscription)
     public function addUser($pseudo, $mail, $hash, $secret){
         $sql = "INSERT INTO utilisateur (pseudo, mail, password, secret) VALUES (:pseudo, :mail, :password, :secret)";
 
@@ -42,6 +45,7 @@ class UserManager extends AbstractManager {
         ]);
     }
 
+    // Trouver tous les utilisateurs
     public function findAll(){
         $sql = "SELECT * FROM utilisateur";
 
@@ -51,11 +55,30 @@ class UserManager extends AbstractManager {
         );
     }
 
+    // Trouver tous les utilisateur ayant un certain rôle
     public function findByRole($role){
         $sql = "SELECT id, pseudo, inscription FROM utilisateur WHERE role = :role";
 
         return self::getResults(
             self::select($sql, ['role' => $role], true),
+            self::$classname
+        );
+    }
+
+    // Effacer un utilisateur
+    public function deleteUser($id) {
+
+        $sql = "DELETE FROM utilisateur WHERE id = :id";
+        return self::delete($sql, ['id' => $id]);
+    }
+
+    // Trouver un utilisateur selon son cookie d'authentification
+    public function findUserByCookie($cookie) {
+
+        $sql = "SELECT * FROM utilisateur WHERE secret = :secret";
+
+        return self::getOneOrNullResult(
+            self::select($sql, ['secret' => $cookie], false),
             self::$classname
         );
     }

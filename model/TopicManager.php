@@ -11,6 +11,7 @@ class TopicManager extends AbstractManager {
         self::connect(self::$classname);
     }
 
+    // Trouver un sujet via son ID
     public function findOneById($id){
         
         $sql = "SELECT * FROM sujet WHERE id = :id";
@@ -21,6 +22,7 @@ class TopicManager extends AbstractManager {
         );
     }
 
+    // Trouver tous les sujets d'un utilisateur particulier
     public function findByUserId($id){
         
         $sql = "SELECT * FROM sujet WHERE user_id = :id ORDER BY creation DESC";
@@ -31,6 +33,7 @@ class TopicManager extends AbstractManager {
         );
     }
 
+    // Ajouter un sujet
     public function addTopic($titre, $contenu, $user_id){
         $sql = "INSERT INTO sujet (titre, contenu, user_id) VALUES (:titre, :contenu, :user_id)";
 
@@ -41,7 +44,8 @@ class TopicManager extends AbstractManager {
         ]);
     }
 
-    public function updateTopic($titre, $contenu, $user_id, $id) {
+    // Editer un sujet
+    public function updateTopic($titre, $contenu, $id) {
         $sql = "UPDATE sujet SET titre = :titre, contenu = :contenu WHERE id = :id";
         return self::update($sql, [
             'id' => $id,
@@ -50,45 +54,37 @@ class TopicManager extends AbstractManager {
         ]);
     }
 
+    // Supprimer un sujet
     public function deleteTopic($id) {
 
         $sql = "DELETE FROM sujet WHERE id = :id";
         return self::delete($sql, ['id' => $id]);
     }
 
-    public function lockTopic($id) {
+    // Switch entre verrouillage et déverrouillage d'un sujet
+    public function lockTopic($id, $bool) {
 
-        $sql = "UPDATE sujet SET verouillage = 1 WHERE id = :id";
-        return self::update($sql, ['id' => $id]);
+        $sql = "UPDATE sujet SET verrouillage = :verrouillage WHERE id = :id";
+        return self::update($sql, ['id' => $id, 'verrouillage' => $bool ? 1 : 0]);
     }
 
-    public function unlockTopic($id) {
+    // Switch entre résolu et non résolu, d'un sujet
+    public function resolveTopic($id, $bool) {
 
-        $sql = "UPDATE sujet SET verouillage = 0 WHERE id = :id";
-        return self::update($sql, ['id' => $id]);
+        $sql = "UPDATE sujet SET resolu = :resolu WHERE id = :id";
+        return self::update($sql, ['id' => $id, 'resolu' => $bool ? 1 : 0]);
     }
 
-    public function resolveTopic($id) {
-
-        $sql = "UPDATE sujet SET resolu = 1 WHERE id = :id";
-        return self::update($sql, ['id' => $id]);
-    }
-
-    public function unresolveTopic($id) {
-
-        $sql = "UPDATE sujet SET resolu = 0 WHERE id = :id";
-        return self::update($sql, ['id' => $id]);
-    }
-
+    // Trouver tous les sujets existants, avec le nombre de messages de chacun, dans l'ordre antéchronologique
     public function findAll(){
-        $sql = "SELECT s.id, s.titre, s.contenu, s.creation, s.user_id, s.verouillage, s.resolu, COUNT(*) AS nbMessages
+        $sql = "SELECT s.id, s.titre, s.contenu, s.creation, s.user_id, s.verrouillage, s.resolu, COUNT(*) AS nbMessages
                     FROM message m, sujet s
                     WHERE m.topic_id = s.id
                     GROUP BY s.id
                 
                 UNION
                 
-                SELECT s.id, s.titre, s.contenu, s.creation, s.user_id, s.verouillage, s.resolu, 0 AS nbMessages
+                SELECT s.id, s.titre, s.contenu, s.creation, s.user_id, s.verrouillage, s.resolu, 0 AS nbMessages
                     FROM sujet s
                     WHERE s.id NOT IN (SELECT topic_id FROM message)
                     GROUP BY s.id
@@ -101,11 +97,20 @@ class TopicManager extends AbstractManager {
         );
     }
 
+    // Trouver le dernier sujet posté par un utilisateur
     public function findLast($user_id) {
         $sql = "SELECT * FROM sujet WHERE user_id = :id ORDER BY creation DESC LIMIT 1";
         return self::getOneOrNullResult(
             self::select($sql, ['id' => $user_id], false),
             self::$classname
         );
+    }
+
+    // Rendre un sujet fantôme (utilisateur supprimé)
+    public function nullifyTopic($id) {
+        $sql = "UPDATE sujet SET user_id = 0 WHERE id = :id";
+        return self::update($sql, [
+            'id' => $id
+        ]);
     }
 }

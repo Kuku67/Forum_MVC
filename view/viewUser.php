@@ -11,14 +11,14 @@ $messages = $result['data']['messages'];
         <?php App\Session::unsetMessage(); ?>
         <?php endif; ?>
         <!-- BUNDLE D'ADMIN -->
-        <?php if(App\Session::getUser()->getRole() === 'admin'): ?>
         <div class="administation-bundle d-flex justify-content-between align-items-center">
             <i class="fas fa-cogs text-dark"></i>
             <p>
-                <a href="#">Boutons admin...</a>
+                <?php if(App\Session::getUser()->getId() == $user->getId()): ?>
+                <a href="/profile/delete/<?= App\Session::getUser()->getId() ?>" class="bg-danger">Supprimer le compte</a>
+                <?php endif; ?>
             </p>
         </div>
-        <?php endif; ?>
     </div>
     <div id="profile-container" class="row">
         <section class="col-lg-4">

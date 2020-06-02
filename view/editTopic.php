@@ -8,7 +8,7 @@
         <p class="alert alert-<?= $message['type'] ?>"><?= $message['content'] ?></p>
         <?php App\Session::unsetMessage(); ?>
         <?php } else { 
-            if($topic->getVerouillage() == 1): ?>
+            if($topic->getVerrouillage() == 1): ?>
         <p class="alert alert-danger">Le sujet est verrouillé.</p>
         <?php endif; } ?>
     </div>
@@ -27,6 +27,7 @@
                 <label for="contenu">Contenu</label>
                 <textarea name="contenu" rows="15"><?= $topic->getContenu() ?></textarea>
             </div>
+            <input type="hidden" name="token" value="<?= App\Session::getToken() ?>">
             <a href="/topic/view/<?= $topic->getId() ?>" class="forgive">Annuler</a>
             <button type="submit" name="submit" class="submit bg-success text-white">Enregistrer</button>
         </form>

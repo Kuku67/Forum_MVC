@@ -1,5 +1,5 @@
 <?php
-
+// Classe dont le métier est tout simplement de fournir une connexion à la BDD.
 namespace App;
 
 abstract class DAO {

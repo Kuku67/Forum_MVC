@@ -17,6 +17,7 @@
                 <label for="contenu">Contenu</label>
                 <textarea name="contenu" rows="15"></textarea>
             </div>
+            <input type="hidden" name="token" value="<?= App\Session::getToken() ?>">
             <a href="/home/index" class="forgive">Annuler</a>
             <button type="submit" name="submit" class="submit bg-success text-white">Envoyer</button>
         </form>

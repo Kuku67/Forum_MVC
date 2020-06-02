@@ -5,30 +5,45 @@ session_start();
 
 abstract class Session {
     
-    public static function getUser(){
+    // Retourne les infos de l'utilisateur présent en session
+    // ou FALSE s'il n'y en a pas
+    public static function getUser() {
         if(isset($_SESSION['user']) && $_SESSION['user'] !== null){
             return $_SESSION['user'];
         }
         return false;
     }
 
-    public static function setUser($user){
+    // Insérer les données utilisateur en session
+    public static function setUser($user) {
         $_SESSION['user'] = $user;
     }
 
-    public static function removeUser(){
+    // Permet de nullifier la connexion au profil
+    public static function removeUser() {
         if(self::getUser()){
             unset($_SESSION['user']);
         }
         return;
     }
 
-    public static function authenticationRequired($roleToHave){
-        if(!self::getUser()){
-            Router::redirectTo("security", "login");
+    // Si un token n'existe pas, j'en créé un
+    public static function setToken() {
+        if(!isset($_SESSION['token'])) {
+            $_SESSION['token'] = bin2hex(random_bytes(24));
         }
     }
 
+    // Si un token existe, je le retourne
+    public static function getToken() {
+        if(isset($_SESSION['token'])) {
+            return $_SESSION['token'];
+        }
+        return false;
+    }
+
+    // Dans le cas où j'utilise bootstrap, mais cela me
+    // permet aussi de personnaliser les messages d'erreur
     public static function setMessage($message, $type) {
         $_SESSION['message'] = [
             "type" => $type,
@@ -36,6 +51,7 @@ abstract class Session {
         ];
     }
 
+    // Si un message d'erreur est stocké, je le récupère
     public static function getMessage() {
         if(isset($_SESSION['message']) && $_SESSION['message'] !== null) {
             return $_SESSION['message'];
@@ -43,6 +59,8 @@ abstract class Session {
         return false;
     }
 
+    // Permet d'éviter les comportements non voulus
+    // comme les messages qui subsistent d'une page à l'autre
     public static function unsetMessage() {
         if(self::getMessage()) {
             unset($_SESSION['message']);

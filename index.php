@@ -17,7 +17,11 @@ Autoloader::register();
 // Appel du Router
 use App\Router;
 // Traitement de la requête HTTP.
-$result = Router::handleRequest($_GET);
+
+use Controller\SecurityController;
+SecurityController::autoConnect();
+
+$result = Router::handleRequest($_GET, $_POST);
 // Tampon de sortie.
 ob_start();
 if(is_array($result) && array_key_exists('view', $result)){

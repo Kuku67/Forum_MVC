@@ -10,7 +10,7 @@ class Topic extends AbstractEntity {
     private $contenu;
     private $creation;
     private $user;
-    private $verouillage;
+    private $verrouillage;
     private $resolu;
     private $nbMessages;
 
@@ -103,21 +103,21 @@ class Topic extends AbstractEntity {
     }
 
     /**
-     * Get the value of verouillage
+     * Get the value of verrouillage
      */ 
-    public function getVerouillage()
+    public function getVerrouillage()
     {
-        return $this->verouillage;
+        return $this->verrouillage;
     }
 
     /**
-     * Set the value of verouillage
+     * Set the value of verrouillage
      *
      * @return  self
      */ 
-    public function setVerouillage($verouillage)
+    public function setVerrouillage($verrouillage)
     {
-        $this->verouillage = $verouillage;
+        $this->verrouillage = $verrouillage;
 
         return $this;
     }
