@@ -8,7 +8,7 @@ abstract class Session {
     // Retourne les infos de l'utilisateur présent en session
     // ou FALSE s'il n'y en a pas
     public static function getUser() {
-        if(isset($_SESSION['user']) && $_SESSION['user'] !== null){
+        if(isset($_SESSION['user']) && $_SESSION['user'] !== NULL){
             return $_SESSION['user'];
         }
         return false;
@@ -27,19 +27,19 @@ abstract class Session {
         return;
     }
 
-    // Si un token n'existe pas, j'en créé un
-    public static function setToken() {
-        if(!isset($_SESSION['token'])) {
-            $_SESSION['token'] = bin2hex(random_bytes(24));
+    public static function generateKey() {
+        if(!isset($_SESSION['key']) || $_SESSION['key'] === NULL) {
+            $_SESSION['key'] = bin2hex(random_bytes(32));
         }
+        return;
     }
 
-    // Si un token existe, je le retourne
-    public static function getToken() {
-        if(isset($_SESSION['token'])) {
-            return $_SESSION['token'];
-        }
-        return false;
+    public static function eraseKey() {
+        unset($_SESSION['key']);
+    }
+
+    public static function getKey() {
+        return isset($_SESSION['key']) ? $_SESSION['key'] : NULL;
     }
 
     // Dans le cas où j'utilise bootstrap, mais cela me
@@ -53,8 +53,10 @@ abstract class Session {
 
     // Si un message d'erreur est stocké, je le récupère
     public static function getMessage() {
-        if(isset($_SESSION['message']) && $_SESSION['message'] !== null) {
-            return $_SESSION['message'];
+        if(isset($_SESSION['message']) && $_SESSION['message'] !== NULL) {
+            $message = $_SESSION['message'];
+            unset($_SESSION['message']);
+            return $message;
         }
         return false;
     }

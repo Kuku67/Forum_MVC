@@ -7,7 +7,9 @@ use Model\TopicManager;
 
 class HomeController {
 
-    // Fonction pour retourner ma Homepage
+    /**
+     * Fonction d'affichage de la HomePage
+     */
     public function index() {
 
         $model = new TopicManager();

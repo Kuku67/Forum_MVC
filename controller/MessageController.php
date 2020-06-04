@@ -14,7 +14,9 @@ if(!Session::getUser()) {
 
 class MessageController {
     
-    // Fonction pour envoyer un message sur un topic
+    /**
+     * Fonction d'envoi d'un message sur un topic
+     */
     public function send() {
         // Si une cible est renseignée
         if(isset($_GET['id'])) {
@@ -49,7 +51,10 @@ class MessageController {
             Router::redirectTo("home", "index");
         }
     }
-    // Fonction de suppression de message
+    
+    /**
+     * Fonction de suppression d'un message
+     */
     public function delete() {
         // Si un identifiant de message est renseigné
         if(isset($_GET['id'])) {
@@ -80,7 +85,10 @@ class MessageController {
             Router::redirectTo("home", "index");
         }
     }
-    // Fonction d'édition d'un message
+    
+    /**
+     * Fonction d'édition d'un message (formulaire+vue)
+     */
     public function edit() {
         // Si un identifiant de message est renseigné
         if(isset($_GET['id'])) {

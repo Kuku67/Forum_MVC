@@ -15,7 +15,9 @@ if(!Session::getUser()) {
 
 class ProfileController {
 
-    // Visionner un profile
+    /**
+     * Fonction pour voir un profil
+     */
     public function view() {
         // Si un param ID est présent
         if(isset($_GET['id'])) {
@@ -48,7 +50,9 @@ class ProfileController {
         }
     }
 
-    // Fonction de suppression d'un utilisateur
+    /**
+     * Fonction de suppression d'un profil
+     */
     public function delete() {
         // Si un identifiant est renseigné
         if(isset($_GET['id'])) {

@@ -156,6 +156,12 @@ main,
     margin: 0;
 }
 
+.topic-container img {
+    max-width: -webkit-fill-available;
+    object-fit: contain;
+    height: auto;
+}
+
 .title-separator {
     margin: 1em auto .6em auto;
     width: 10%;

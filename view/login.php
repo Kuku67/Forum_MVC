@@ -3,10 +3,10 @@
         <p class="lead">Forum <span class="separator"> / </span>Connexion</p>
         <?php  if($message = App\Session::getMessage()): ?>
         <div class="alert alert-<?= $message['type'] ?>"><?= $message['content'] ?></div>
-        <?php App\Session::unsetMessage(); ?>
         <?php endif; ?>
     </div>
     <p class="lead mt-4">Vous n'avez pas de compte ? <a href="/security/register">Inscrivez-vous !</a></p>
+    <p class="lead mt-4"><a href="/security/recover">J'ai oublié mon mot de passe</a></p>
     <form id="security-form" action="" method="POST" class="p-4">
         <div class="form-group">
             <label for="login">Pseudo ou E-mail</label>
@@ -20,7 +20,7 @@
             <input type="checkbox" class="form-check-input" name="remember">
             <label class="form-check-label" for="remember">Check me out</label>
         </div>
-        <input type="hidden" name="token" value="<?= App\Session::getToken() ?>">
+        <input type="hidden" name="token" value="<?= $csrf ?>">
         <button type="submit" class="submit" name="submit">Connexion</button>
     </form>
 </div>

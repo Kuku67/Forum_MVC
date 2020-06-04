@@ -16,12 +16,21 @@ require_once 'app/Autoloader.php';
 Autoloader::register();
 // Appel du Router
 use App\Router;
+// Appel de la Session
+use App\Session;
 // Traitement de la requête HTTP.
-
 use Controller\SecurityController;
 SecurityController::autoConnect();
+// On génère une clé CSRF
+Session::generateKey();
 
-$result = Router::handleRequest($_GET, $_POST);
+$csrf = hash_hmac('sha256', 'jlgthqvetrkh qkrthkerh', Session::getKey());
+
+if(Router::csrfProtection($csrf)) {
+    $result = Router::handleRequest($_GET, $_POST);
+} else {
+    Router::redirectTo("security", "logout");
+}
 // Tampon de sortie.
 ob_start();
 if(is_array($result) && array_key_exists('view', $result)){

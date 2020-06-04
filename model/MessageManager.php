@@ -11,7 +11,9 @@ class MessageManager extends AbstractManager {
         self::connect(self::$classname);
     }
 
-    // Trouver un message unique via son ID
+    /**
+     * Trouver un message en fonction de son ID
+     */
     public function findOneById($id){
         
         $sql = "SELECT * FROM message WHERE id = :id";
@@ -22,7 +24,9 @@ class MessageManager extends AbstractManager {
         );
     }
 
-    // Trouver tous les messages d'un utilisateur dans l'ordre antéchronologique
+    /**
+     * Trouver les messages d'un utilisateur dans l'ordre antéchronologique
+     */
     public function findByUserId($id){
         
         $sql = "SELECT * FROM message WHERE user_id = :id ORDER BY creation DESC";
@@ -33,7 +37,9 @@ class MessageManager extends AbstractManager {
         );
     }
 
-    // Ajouter un message sur un topic
+    /**
+     * Ajout un message
+     */
     public function addMessage($contenu, $user_id, $topic_id){
         $sql = "INSERT INTO message (contenu, user_id, topic_id) VALUES (:contenu, :user_id, :topic_id)";
 
@@ -44,7 +50,9 @@ class MessageManager extends AbstractManager {
         ]);
     }
 
-    // Editer un message
+    /**
+     * Edition d'un message
+     */
     public function updateMessage($contenu, $id) {
         $sql = "UPDATE message SET contenu = :contenu WHERE id = :id";
         return self::update($sql, [
@@ -53,15 +61,20 @@ class MessageManager extends AbstractManager {
         ]);
     }
 
-    // Rendre un message fantôme (utilisateur supprimé)
+    /**
+     * Mettre un message en statut fantôme
+     * (utilisateur supprimé)
+     */
     public function nullifyMessage($id) {
-        $sql = "UPDATE message SET user_id = 0 WHERE id = :id";
+        $sql = "UPDATE message SET user_id = 11 WHERE id = :id";
         return self::update($sql, [
             'id' => $id
         ]);
     }
 
-    // Trouver tous les messages d'un utilisateur, sans formatage particulier
+    /**
+     * Trouver tous les messages en fonction de l'ID utilisateur
+     */
     public function findAllByUserId($id) {
         $sql = "SELECT * FROM message WHERE user_id = :id";
 
@@ -71,8 +84,10 @@ class MessageManager extends AbstractManager {
         );
     }
 
-    // Trouver tous les messages liés à un sujet
-    public function findAll($topic_id){
+    /**
+     * Trouver tous les messages d'un topic dans l'ordre chronologique
+     */
+    public function findAllByTopicId($topic_id){
         $sql = "SELECT * FROM message WHERE topic_id = :id ORDER BY creation ASC";
 
         return self::getResults(
@@ -81,7 +96,9 @@ class MessageManager extends AbstractManager {
         );
     }
 
-    // Supprimer un message
+    /**
+     * Supprimer un message
+     */
     public function deleteMessage($id) {
         $sql = "DELETE FROM message WHERE id = :id";
         return self::delete($sql, ['id' => $id]);

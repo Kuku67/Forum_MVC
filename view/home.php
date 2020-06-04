@@ -3,7 +3,6 @@
 <div id="home-jumbotron" class="jumbotron h-100">
     <?php if($message = App\Session::getMessage()): ?>
     <p class="alert alert-<?= $message['type'] ?>"><?= $message['content'] ?></p>
-    <?php App\Session::unsetMessage(); ?>
     <?php endif; ?>
   <h1 class="display-4">Bienvenue sur mon forum !</h1>
   <p class="lead">Ce projet a pour but de mettre en pratique tout ce qui a été appris lors de la formation.</p>
@@ -48,7 +47,7 @@
       </div>
       <?php foreach($topics as $topic): ?>
       <div class="row topic <?= $topic->getResolu() == true ? "resolved" : null ?>">
-          <div class="col-lg-8">
+          <div class="col-lg-8 col-md-12">
               <p class="lead">
                 <?php if($topic->getVerrouillage() == true): ?>
                 <span class="text-danger">[CLOSED] </span>
@@ -62,11 +61,11 @@
               </p>
               <p class="lead italic">créé par <a href="/profile/view/<?= $topic->getUser()->getId() ?>"><?= $topic->getUser()->getPseudo() ?></a></p>
           </div>
-          <div class="col-lg-2">
+          <div class="col-lg-2 col-md-2 col-sm-2">
               <p class="lead label-message"><i class="fas fa-comment"></i><?= $topic->getNbMessages() ?></p>
           </div>
-          <div class="col-lg-2">
-              <p class="lead label-date">
+          <div class="col-lg-2 col-md-8 col-sm-8">
+              <p class="lead label-date text-md-left text-sm-left">
                   Le <?= $topic->getCreation('d-m-Y') ?><br>à <?= $topic->getCreation('H:i') ?>
               </p>
           </div>

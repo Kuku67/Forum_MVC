@@ -6,7 +6,6 @@
         <p class="lead">Forum <span class="separator"> / </span>Édition de sujet - crée par <a href="/profile/view/<?= $topic->getUser()->getId() ?>"><?= $topic->getUser()->getPseudo() ?></a></p>
         <?php  if($message = App\Session::getMessage()) { ?>
         <p class="alert alert-<?= $message['type'] ?>"><?= $message['content'] ?></p>
-        <?php App\Session::unsetMessage(); ?>
         <?php } else { 
             if($topic->getVerrouillage() == 1): ?>
         <p class="alert alert-danger">Le sujet est verrouillé.</p>
@@ -27,7 +26,7 @@
                 <label for="contenu">Contenu</label>
                 <textarea name="contenu" rows="15"><?= $topic->getContenu() ?></textarea>
             </div>
-            <input type="hidden" name="token" value="<?= App\Session::getToken() ?>">
+            <input type="hidden" name="token" value="<?= $csrf ?>">
             <a href="/topic/view/<?= $topic->getId() ?>" class="forgive">Annuler</a>
             <button type="submit" name="submit" class="submit bg-success text-white">Enregistrer</button>
         </form>

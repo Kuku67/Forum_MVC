@@ -14,7 +14,9 @@ if(!Session::getUser()) {
 // Déclaration de la classe.
 class TopicController {
 
-    // Création d'un topic
+    /**
+     * Fonction de création d'un topic
+     */
     public function create() {
         // Si un formulaire a été envoyé
         if(!empty($_POST)){
@@ -47,7 +49,9 @@ class TopicController {
         ];
     }
 
-    // Visionner un topic
+    /**
+     * Fonction de visionnage d'un topic
+     */
     public function view() {
         // Si un param ID est présent
         if(isset($_GET['id'])) {
@@ -59,7 +63,7 @@ class TopicController {
                 // Choix du manager
                 $model = new MessageManager();
                 // Récupération des messages
-                $messages = $model->findAll($topic->getId());
+                $messages = $model->findAllByTopicId($topic->getId());
                 // Retourne la vue avec les datas nécessaires
                 return [
                     "view" => "viewTopic.php",
@@ -78,7 +82,9 @@ class TopicController {
         }
     }
 
-    // Supprimer un topic
+    /**
+     * Fonction de suppression d'un topic
+     */
     public function delete() {
         // Si un param ID est présent
         if(isset($_GET['id'])) {
@@ -107,7 +113,9 @@ class TopicController {
         }
     }
 
-    // Verrouiller un topic
+    /**
+     * Fonction verrouillage/déverrouillage d'un topic
+     */
     public function lock() {
         // Si un param ID est présent
         if(isset($_GET['id'])) {
@@ -135,7 +143,9 @@ class TopicController {
         }
     }
 
-    // Switch entre résolu/non résolu
+    /**
+     * Fonction de statut résolu/non résolu d'un topic
+     */
     public function resolve() {
         // Si un param ID est présent
         if(isset($_GET['id'])) {
@@ -163,7 +173,9 @@ class TopicController {
         }
     }
 
-    // Modifier un topic
+    /**
+     * Fonction de modification d'un topic (formulaire+vue)
+     */
     public function edit() {
 
         // Si un param ID est présent

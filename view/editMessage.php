@@ -6,7 +6,6 @@
         <p class="lead">Forum <span class="separator"> / </span>Édition de message - crée par <a href="/profile/view/<?= $comment->getUser()->getId() ?>"><?= $comment->getUser()->getPseudo() ?></a></p>
         <?php  if($message = App\Session::getMessage()): ?>
         <p class="alert alert-<?= $message['type'] ?>"><?= $message['content'] ?></p>
-        <?php App\Session::unsetMessage(); ?>
         <?php endif; ?>
     </div>
     <!-- CONTENEUR DU SUJET -->
@@ -20,7 +19,7 @@
                 <label for="contenu">Contenu</label>
                 <textarea name="contenu" rows="15"><?= $comment->getContenu() ?></textarea>
             </div>
-            <input type="hidden" name="token" value="<?= App\Session::getToken() ?>">
+            <input type="hidden" name="token" value="<?= $csrf ?>">
             <a href="/topic/view/<?= $comment->getTopic()->getId() ?>" class="forgive">Annuler</a>
             <button type="submit" name="submit" class="submit bg-success text-white">Enregistrer</button>
         </form>

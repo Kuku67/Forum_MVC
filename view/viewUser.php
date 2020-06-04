@@ -8,7 +8,6 @@ $messages = $result['data']['messages'];
         <p class="lead">Forum <span class="separator"> / </span>Profil de <a href="/profile/view/<?= $user->getId() ?>"><?= $user->getPseudo() ?></a></p>
         <?php  if($message = App\Session::getMessage()): ?>
         <p class="alert alert-<?= $message['type'] ?>"><?= $message['content'] ?></p>
-        <?php App\Session::unsetMessage(); ?>
         <?php endif; ?>
         <!-- BUNDLE D'ADMIN -->
         <div class="administation-bundle d-flex justify-content-between align-items-center">

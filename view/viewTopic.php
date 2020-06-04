@@ -7,16 +7,14 @@
         <p class="lead">Forum <span class="separator"> / </span>Sujet - crée par <a href="/profile/view/<?= $topic->getUser()->getId() ?>"><?= $topic->getUser()->getPseudo() ?></a></p>
         <?php  if($message = App\Session::getMessage()) { ?>
         <p class="alert alert-<?= $message['type'] ?>"><?= $message['content'] ?></p>
-        <?php App\Session::unsetMessage(); ?>
         <?php } else { 
             if($topic->getVerrouillage() == true): ?>
         <p class="alert alert-danger">Le sujet est verrouillé.</p>
         <?php endif; } ?>
         <!-- BUNDLE D'ADMIN -->
         <?php if($topic->getUser()->getId() == App\Session::getUser()->getId() || App\Session::getUser()->getRole() === 'admin'): ?>
-        <div class="administation-bundle d-flex justify-content-between align-items-center">
-            <i class="fas fa-cogs text-dark"></i>
-            <p>
+        <div class="administation-bundle d-flex flex-wrap justify-content-center align-items-center p-2">
+            <p class="d-flex flex-wrap">
                 <a href="/topic/lock/<?= $topic->getId() ?>"><i class="fas fa-key"></i><?= $topic->getVerrouillage() == false ? 'Verrouiller le sujet' : 'Déverrouiller le sujet' ?></a>
                 <a href="/topic/resolve/<?= $topic->getId() ?>"><i class="fas fa-check"></i><?= $topic->getResolu() == false ? 'Marquer comme résolu' : 'Retirer le statut « résolu »' ?></a>
                 <a href="/topic/edit/<?= $topic->getId() ?>"><i class="fas fa-pencil-ruler"></i>Éditer</a>
@@ -57,7 +55,7 @@
                     <label for="contenu" class="text-white lead">Message</label>
                     <textarea name="contenu" class="form-control" rows="15"></textarea>
                 </div>
-                <input type="hidden" name="token" value="<?= App\Session::getToken() ?>">
+                <input type="hidden" name="token" value="<?= $csrf ?>">
                 <button type="submit" name="submit" class="submit">Déposer le message</button>
             </form>
         </div>

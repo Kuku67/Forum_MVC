@@ -1,22 +1,13 @@
 <div class="container-fluid">
     <div class="container-heading">
-        <p class="lead">Forum <span class="separator"> / </span>Inscription</p>
+        <p class="lead">Forum <span class="separator"> / </span>Récupération de mot de passe</p>
         <?php  if($message = App\Session::getMessage()): ?>
         <div class="alert alert-<?= $message['type'] ?>"><?= $message['content'] ?></div>
         <?php endif; ?>
     </div>
-    <p class="lead mt-4">Vous avez déjà un compte ? <a href="/security/login">Connectez-vous !</a></p>
     <form id="security-form" action="" method="POST" class="p-4">
         <div class="form-group">
-            <label for="pseudo">Pseudo</label>
-            <input type="text" class="form-control" name="pseudo">
-        </div>
-        <div class="form-group">
-            <label for="mail">E-mail</label>
-            <input type="mail" class="form-control" name="mail">
-        </div>
-        <div class="form-group">
-            <label for="password">Mot de passe</label>
+            <label for="password">Nouveau mot de passe</label>
             <input type="password" class="form-control" name="password">
         </div>
         <div class="form-group">
@@ -24,6 +15,6 @@
             <input type="password" class="form-control" name="password2">
         </div>
         <input type="hidden" name="token" value="<?= $csrf ?>">
-        <button type="submit" class="submit" name="submit">Inscription</button>
+        <button type="submit" class="submit" name="submit">Envoyer</button>
     </form>
 </div>

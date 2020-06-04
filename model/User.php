@@ -11,6 +11,8 @@ class User extends AbstractEntity {
     private $inscription;
     private $role;
     private $secret;
+    private $token;
+    private $mailToken;
 
     public function __construct($data){
         parent::hydrate($data, $this);
@@ -136,6 +138,46 @@ class User extends AbstractEntity {
     public function setSecret($secret)
     {
         $this->secret = $secret;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of token
+     */ 
+    public function getToken()
+    {
+        return $this->token;
+    }
+
+    /**
+     * Set the value of token
+     *
+     * @return  self
+     */ 
+    public function setToken($token)
+    {
+        $this->token = $token;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of mailToken
+     */ 
+    public function getMailToken()
+    {
+        return $this->mailToken;
+    }
+
+    /**
+     * Set the value of mailToken
+     *
+     * @return  self
+     */ 
+    public function setMailToken($mailToken)
+    {
+        $this->mailToken = $mailToken;
 
         return $this;
     }

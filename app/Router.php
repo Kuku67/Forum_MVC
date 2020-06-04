@@ -6,15 +6,7 @@ use App\Session;
 abstract class Router {
     
     // Fonction de gestion de la requête HTTP
-    public static function handleRequest($get, $post){
-        // Avant toute chose, si j'ai pas de Token CSRF, j'en met un.
-        !Session::getToken() ? Session::setToken() : null;
-        // Si sur le moindre POST, le Token ne correspond pas, on annule.
-        if(!empty($post) && $post['token'] !== Session::getToken()) {
-            Session::setToken();
-            self::redirectTo("home", "index");
-        }
-
+    public static function handleRequest($get){
         // Controller et Method par défaut
         $ctrlname = "Controller\HomeController";
         $method = "index";
@@ -32,6 +24,19 @@ abstract class Router {
         }
         // On retourne l'action
         return $ctrl->$method();
+    }
+
+    public static function csrfProtection($csrf_token) {
+        if(!empty($_POST)) {
+            if(isset($_POST['token'])) {
+                $csrf = $_POST['token'];
+                if(hash_equals($csrf, $csrf_token)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        return true;
     }
 
     public static function redirectTo($ctrl = null, $method = null, $id = null){
