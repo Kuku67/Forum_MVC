@@ -1,9 +1,10 @@
 <?php
 namespace Controller;
 
-use Model\UserManager;
-use App\Session;
 use App\Router;
+use App\Session;
+use App\Mailer;
+use Model\UserManager;
 
 class SecurityController {
 
@@ -99,19 +100,17 @@ class SecurityController {
                     if(!$model->findUser($mail) && !$model->findUser($username)){
                         // Je génère un code qui servira pour les cookies
                         $secret = bin2hex(random_bytes(24));
+                        // Je génère un token pour le mail
                         $mailToken = bin2hex((random_bytes(24)));
-                        $to = $mail;
-                        $subject = "BLOGMVC - Validation de l'adresse mail";
-                        $message = "Bienvenue, $username !<br>
-                        Veuillez valider votre adresse e-mail en cliquant sur <a href='http://blogmvc.test/security/validMail/$mailToken'>ce lien</a>.";
                         // Je hash le mot de passe
                         $hash = password_hash($pass1, PASSWORD_ARGON2I);
                         // J'ajoute l'utilisateur dans la base de données
-                        if($model->addUser($username, $mail, $hash, $secret, $mailToken)){
-                            mail($to, $subject, $message);
-                            Session::setMessage('Inscription réussie. Validez votre adresse e-mail grâce au mail que vous allez recevoir', 'success');
-                            Router::redirectTo("home", "index");
-                        }
+                        $model->addUser($username, $mail, $hash, $secret, $mailToken);
+                        // J'envoie le mail
+                        Mailer::registerMail($mail, $username, $mailToken);
+                        // Message de confirmation, redirection
+                        Session::setMessage('Inscription réussie. Validez votre adresse e-mail grâce au mail que vous allez recevoir', 'success');
+                        Router::redirectTo("home", "index");
                     }
                     else {
                         Session::setMessage('Pseudo ou E-mail déjà utilisé.','danger');
@@ -166,7 +165,7 @@ class SecurityController {
     }
 
     /**
-     * Fonction d'envoit d'un mail de récupération
+     * Fonction d'envoi d'un mail de récupération
      */
     public function recover() {
 
@@ -181,23 +180,23 @@ class SecurityController {
             $model = new UserManager();
             if($mail) {
                 if($user = $model->findUser($mail)) {
-
+                    // Je génère un token
                     $recoverToken = bin2hex(random_bytes(28));
+                    // Je modifie le token en BDD
                     $model->updateToken($mail, $recoverToken);
-                    $userPseudo = $user->getPseudo();
-                    $recoverLink = "http://blogmvc.test/security/recoverpass/$recoverToken";
-                    $subject = "Bonjour, $userPseudo, vous avez demandé une récupération de mot de passe";
-                    $message = "Pour récupérer votre mot de passe, veuillez vous rendre sur ce lien : <a href='". $recoverLink ."' >Lien</a>";
-
-                    $result = mail($mail, $subject, $message);
-
-                    if($result) {
-                        Session::setMessage("Le mail de récupération a bien été envoyé", "success");
-                        Router::redirectTo("home", "index");
-                    } else {
-                        var_dump($result);
-                    }
+                    // J'envoie le mail
+                    Mailer::recoverMail($mail, $user->getPseudo(), $recoverToken);
+                    // Confirmation et redirection
+                    Session::setMessage("Le mail de récupération a bien été envoyé", "success");
+                    Router::redirectTo("home", "index");
+                } else {
+                    Session::setMessage("Le mail n'existe pas.", "danger");
+                    Router::redirectTo("security", "recover");
                 }
+            }
+            else {
+                Session::setMessage("Le mail n'est pas au bon format.", "danger");
+                Router::redirectTo("security", "recover");
             }
         }
         else {
@@ -275,12 +274,18 @@ class SecurityController {
 
             if($user = $model->findUserByMailToken($mailToken)) {
 
-                if($user->getMailToken() === $mailToken) {
-                    $model->validateAccount($user->getId());
-                    Session::setMessage("Votre compte a été activé, pour pouvez vous connecter.", "success");
-                    Router::redirectTo("security", "login");
-                }
+                $model->validateAccount($user->getId());
+                Mailer::accountValidation($user->getMail(), $user->getPseudo());
+                Session::setMessage("Votre compte a été activé, pour pouvez vous connecter.", "success");
+                Router::redirectTo("security", "login");
             }
+            else {
+                Session::setMessage("Aucun identifiant trouvé pour ce token de validation.", "danger");
+                Router::redirectTo("security", "login");
+            }
+        }
+        else {
+            Router::redirectTo("home", "index");
         }
     }
 }

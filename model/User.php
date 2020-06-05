@@ -7,6 +7,7 @@ class User extends AbstractEntity {
 
     private $id;
     private $pseudo;
+    private $mail;
     private $password;
     private $inscription;
     private $role;
@@ -178,6 +179,26 @@ class User extends AbstractEntity {
     public function setMailToken($mailToken)
     {
         $this->mailToken = $mailToken;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of mail
+     */ 
+    public function getMail()
+    {
+        return $this->mail;
+    }
+
+    /**
+     * Set the value of mail
+     *
+     * @return  self
+     */ 
+    public function setMail($mail)
+    {
+        $this->mail = $mail;
 
         return $this;
     }
